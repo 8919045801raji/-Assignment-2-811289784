@@ -1,0 +1,115 @@
+---
+title: "Assignment-2"
+author: "Rajeswari Theegala"
+date: "2023-09-22"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+**Problem**
+
+Suppose
+
+The Plants Production in Larger Size $$=x$$
+The Plants Production in  Medium Size $$=y$$
+The Plants Production in  Small Size $$=z$$
+
+Objective Function of Problem is 
+$$  Max \hspace{.3cm} Z = 420(x_1+x_2+x_3)+360(y_1+y_2+y_3)+300(z_1+z_2+z_3)$$
+Rearranging the objective function
+
+$$  Max\hspace{.3cm} Z = 420x_1 + 360y_1 + 300z_1 + 420x_2 + 360y_2 + 300z_2 + 420x_3 + 360y_3 + 300z_3 $$
+Subject to
+
+
+$$x_1+y_1+z_1\le750$$
+$$x_2+y_2+z_2\le900$$
+$$x_3+y_3+z_3\le450 $$
+$$20x_1+15y_1+12z_1\le13000$$
+$$20x_2+15y_2+12z_2\le12000$$
+$$20x_3+15y_3+12z_3\le5000$$
+$$x_1+x_2+x_3\le900$$
+$$y_1+y_2+y_3\le1200$$
+$$z_1+z_2+z_3\le750$$
+Non-negativity constraints :
+
+
+$$x_1, x_2, x_3, y_1, y_2, y_3, z_1, z_2, z_3 \ge0 $$
+**The LP problem limitations listed above can also be written in this format**
+
+
+$$x_1+y_1+z_1+0x_2+0y_2+0z_2+0x_3+0y_3+0z_3\le750$$
+$$0x_1+0y_1+0z_1+x_2+y_2+z_2+0x_3+0y_3+0z_3\le900$$
+$$0x_1+0y_1+0z_1+0x_2+0y_2+0z_2+x_3+y_3+z_3\le450$$
+$$20x_1+15y_1+12z_1+0x_2+0y_2+0z_2+0x_3+0y_3+0z_3\le13000$$
+$$0x_1+0y_1+0z_1+20x_2+15y_2+12z_2+0x_3+0y_3+0z_3\le12000$$
+$$0x_1+0y_1+0z_1+0x_2+0y_2+0z_2+20x_3+15y_3+12z_3\le5000$$
+$$x_1+0y_1+0z_1+x_2+0y_2+0z_2+x_3+0y_3+0z_3\le900$$
+$$0x_1+0y_1+z_1+0x_2+0y_2+z_2+0x_3+0y_3+z_3\le750$$
+```{r setup}
+
+#Solution
+
+#installing the required packages
+#install.packages("lpsolve")
+
+#library
+library(lpSolve)
+
+#The objective function is to maximize Z = 420x1 + 360y1 + 300z1 + 420x2 + 360y2 + 300z2 + 420x3 + 360y3 + 300z3
+
+
+f.obj<-c(420,360,300,420,360,300,420,360,300)
+
+#Below constraints are written in the matrix form:
+
+f.con <-matrix(c(1,1,1,0,0,0,0,0,0,
+                 0,0,0,1,1,1,0,0,0,
+                 0,0,0,0,0,0,1,1,1,
+                 20,15,12,0,0,0,0,0,0,
+                 0,0,0,20,15,12,0,0,0,
+                 0,0,0,0,0,0,20,15,12,
+                 1,0,0,1,0,0,1,0,0,
+                 0,1,0,0,1,0,0,1,0,
+                 0,0,1,0,0,1,0,0,1), nrow = 9, byrow = TRUE)
+
+# set the direction of the inequalities using subject to equation for this.
+
+fun.dir <-c("<=",
+          "<=",
+          "<=",
+          "<=",
+          "<=",
+          "<=", 
+          "<=",
+          "<=",
+          "<=")
+#set the right hand side of the coefficients
+
+f.rhs <-c(750,
+          900,
+          450,
+          13000,
+          12000,
+          5000,
+          900,
+          1200,
+          750)
+
+#finding the objective function value 
+
+
+lp("max", f.obj,f.con,fun.dir, f.rhs)
+
+#Values of each variable
+
+
+lp("max", f.obj,f.con,fun.dir, f.rhs)$solution
+
+
+
+```
+
+
+
